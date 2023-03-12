@@ -1,0 +1,19 @@
+payload:
+- DOMAIN-speedtest.cn,DIRECT
+    - IP-CIDR,172.12.0.0/16,DIRECT
+    - IP-CIDR,8.140.117.129/16,DIRECT
+    - IP-CIDR,139.186.21.120/16,DIRECT
+    - DOMAIN-SUFFIX,dmm.com,PROXY
+    - DOMAIN-SUFFIX,dmm.co.jp,proxy
+    - DOMAIN-SUFFIX,dmmapis.com,proxy
+    - DOMAIN-SUFFIX,alchemystars.jp,proxy
+    - DOMAIN-SUFFIX,alchemystars.com,proxy
+    - DOMAIN-SUFFIX,intlgame.com,proxy
+    - DOMAIN-SUFFIX,worldflipper.jp,proxy
+    - DOMAIN-SUFFIX,akamaized.net,proxy
+    - IP-CIDR,43.132.83.44,proxy
+    - DOMAIN-SUFFIX,shadowverse.jp,proxy
+    - DOMAIN-SUFFIX,akamaihd.net,proxy
+    - DOMAIN-KEYWORD,shadowverse,proxy
+    - DOMAIN-KEYWORD,akamai,proxy
+    - DOMAIN-KEYWORD,steam,proxy
