@@ -1,0 +1,15 @@
+payload:
+    - DOMAIN-SUFFIX,dmm.com
+    - DOMAIN-SUFFIX,dmm.co.jp
+    - DOMAIN-SUFFIX,dmmapis.com
+    - DOMAIN-SUFFIX,alchemystars.jp
+    - DOMAIN-SUFFIX,alchemystars.com
+    - DOMAIN-SUFFIX,intlgame.com
+    - DOMAIN-SUFFIX,worldflipper.jp
+    - DOMAIN-SUFFIX,akamaized.net
+    - IP-CIDR,43.132.83.44
+    - DOMAIN-SUFFIX,shadowverse.jp
+    - DOMAIN-SUFFIX,akamaihd.net
+    - DOMAIN-KEYWORD,shadowverse
+    - DOMAIN-KEYWORD,akamai
+
