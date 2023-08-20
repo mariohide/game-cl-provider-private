@@ -1,5 +1,4 @@
 payload:
-    - DOMAIN-KEYWORD,torrent
     - DOMAIN-KEYWORD,peer_id=
     - DOMAIN-KEYWORD,info_hash
     - DOMAIN-KEYWORD,find_node
