@@ -9,6 +9,6 @@ payload:
     - DOMAIN-KEYWORD,bt
     - DOMAIN-KEYWORD,skyey
     - DOMAIN-KEYWORD,tracker
-    - DOMAIN-KEYWORD,torrent
+    - DOMAIN-KEYWORD,bittorrent
     - DOMAIN-KEYWORD,announce
     
