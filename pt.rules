@@ -1,4 +1,7 @@
 payload:
+    - DOMAIN-KEYWORD,tracker
+    - DOMAIN-KEYWORD,bittorrent
+    - DOMAIN-KEYWORD,announce
     - DOMAIN-KEYWORD,peer_id=
     - DOMAIN-KEYWORD,info_hash
     - DOMAIN-KEYWORD,find_node
@@ -8,7 +11,4 @@ payload:
     - DOMAIN-KEYWORD,pt
     - DOMAIN-KEYWORD,bt
     - DOMAIN-KEYWORD,skyey
-    - DOMAIN-KEYWORD,tracker
-    - DOMAIN-KEYWORD,bittorrent
-    - DOMAIN-KEYWORD,announce
-    
+
