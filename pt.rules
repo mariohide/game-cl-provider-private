@@ -5,7 +5,7 @@ payload:
     - DOMAIN-KEYWORD,node
     - DOMAIN-KEYWORD,torrent
     - DOMAIN-KEYWORD,announce
-    - DOMAIN-KEYWORD,passkey
+    - DOMAIN-KEYWORD,passkey=
     - DOMAIN-KEYWORD,Joker
     - DOMAIN-KEYWORD,pt
     - DOMAIN-KEYWORD,bt
