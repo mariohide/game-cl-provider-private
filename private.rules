@@ -11,18 +11,5 @@ payload:
     - DOMAIN-SUFFIX,shadowverse.jp
     - DOMAIN-SUFFIX,akamaihd.net
     - DOMAIN-KEYWORD,shadowverse
-    - DOMAIN-KEYWORD,akamai
-    - DOMAIN-KEYWORD,torrent
-    - DOMAIN-KEYWORD,peer
-    - DOMAIN-KEYWORD,hash
-    - DOMAIN-KEYWORD,node
-    - DOMAIN-KEYWORD,torrent
-    - DOMAIN-KEYWORD,announce
-    - DOMAIN-KEYWORD,passkey
-    - DOMAIN-KEYWORD,Joker
-    - DOMAIN-KEYWORD,pt
-    - DOMAIN-KEYWORD,bt
-    - DOMAIN-KEYWORD,skyey
-    - DOMAIN-KEYWORD,tracker
-    
+
 
