@@ -1,5 +1,4 @@
 payload:
-    - DOMAIN-KEYWORD,akamai
     - DOMAIN-KEYWORD,torrent
     - DOMAIN-KEYWORD,peer
     - DOMAIN-KEYWORD,hash
