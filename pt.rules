@@ -1,14 +1,15 @@
 payload:
     - DOMAIN-KEYWORD,torrent
-    - DOMAIN-KEYWORD,peer
-    - DOMAIN-KEYWORD,hash
-    - DOMAIN-KEYWORD,node
-    - DOMAIN-KEYWORD,torrent
-    - DOMAIN-KEYWORD,announce
+    - DOMAIN-KEYWORD,peer_id=
+    - DOMAIN-KEYWORD,info_hash
+    - DOMAIN-KEYWORD,find_node
+    - DOMAIN-KEYWORD,get_peer
     - DOMAIN-KEYWORD,passkey=
     - DOMAIN-KEYWORD,Joker
     - DOMAIN-KEYWORD,pt
     - DOMAIN-KEYWORD,bt
     - DOMAIN-KEYWORD,skyey
     - DOMAIN-KEYWORD,tracker
+    - DOMAIN-KEYWORD,torrent
+    - DOMAIN-KEYWORD,announce
     
