@@ -299,3 +299,4 @@ payload:
   - IP-CIDR,49.12.76.8/32
   - IP-CIDR,52.58.128.163/32
   - IP-CIDR,91.216.110.52/32
+  - DOMAIN-SUFFIX,desync.com
