@@ -1,4 +1,5 @@
 payload:
+  - DOMAIN-KEYWORD,ddys
   - DOMAIN-KEYWORD,tracker
   - DOMAIN-KEYWORD,bittorrent
   - DOMAIN-KEYWORD,announce
