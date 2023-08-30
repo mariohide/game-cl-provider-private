@@ -1,5 +1,7 @@
 payload:
   - DOMAIN-KEYWORD,ddys
+  - DOMAIN-KEYWORD,mihoyo
+  - DOMAIN-KEYWORD,hoyoverse
   - DOMAIN-KEYWORD,tracker
   - DOMAIN-KEYWORD,bittorrent
   - DOMAIN-KEYWORD,announce
