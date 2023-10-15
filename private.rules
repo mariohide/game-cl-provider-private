@@ -11,3 +11,5 @@ payload:
     - DOMAIN-SUFFIX,shadowverse.jp
     - DOMAIN-SUFFIX,akamaihd.net
     - DOMAIN-KEYWORD,shadowverse
+    - DOMAIN-KEYWORD,bing
+    - DOMAIN-KEYWORD,microsoft
