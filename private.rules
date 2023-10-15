@@ -8,9 +8,6 @@ payload:
     - DOMAIN-SUFFIX,worldflipper.jp
     - DOMAIN-SUFFIX,akamaized.net
     - DOMAIN-SUFFIX,bangumi.online
-    - IP-CIDR,43.132.83.44
     - DOMAIN-SUFFIX,shadowverse.jp
     - DOMAIN-SUFFIX,akamaihd.net
     - DOMAIN-KEYWORD,shadowverse
-
-
