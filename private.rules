@@ -15,3 +15,5 @@ payload:
     - DOMAIN-KEYWORD,microsoft
     - DOMAIN-KEYWORD,pixiv
     - DOMAIN-SUFFIX,pixiv.net
+    - DOMAIN-KEYWORD,kemono
+    - DOMAIN-SUFFIX,kemono.su
