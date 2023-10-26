@@ -17,3 +17,4 @@ payload:
     - DOMAIN-SUFFIX,pixiv.net
     - DOMAIN-KEYWORD,kemono
     - DOMAIN-SUFFIX,kemono.su
+    - IP-CIDR,13.107.21.200
