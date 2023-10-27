@@ -19,4 +19,7 @@ payload:
     - DOMAIN-SUFFIX,kemono.su
     - IP-CIDR,13.107.21.200/32,no-resolve
     - DOMAIN-SUFFIX,msftconnecttest.com
-
+    - DOMAIN-SUFFIX,bgm.tv
+    - DOMAIN-SUFFIX,chii.in
+    - DOMAIN-SUFFIX,bangumi.tv
+    - DOMAIN-SUFFIX,github.io
