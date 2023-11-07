@@ -24,3 +24,4 @@ payload:
     - DOMAIN-SUFFIX,bangumi.tv
     - DOMAIN-SUFFIX,github.io
     - DOMAIN-SUFFIX,twimg.com
+    - DOMAIN-KEYWORD,1lib
