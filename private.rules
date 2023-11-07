@@ -25,3 +25,4 @@ payload:
     - DOMAIN-SUFFIX,github.io
     - DOMAIN-SUFFIX,twimg.com
     - DOMAIN-KEYWORD,1lib
+    - DOMAIN-KEYWORD,siglelogin
