@@ -24,6 +24,7 @@ payload:
     - DOMAIN-SUFFIX,twimg.com
     - DOMAIN-KEYWORD,1lib
     - DOMAIN-KEYWORD,zlib
+    - DOMAIN-KEYWORD,hentai
     - DOMAIN-KEYWORD,siglelogin
     - IP-CIDR,173.244.217.42/32,no-resolve
     - IP-CIDR,209.95.56.60/32,no-resolve
