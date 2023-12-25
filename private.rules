@@ -17,7 +17,6 @@ payload:
     - DOMAIN-SUFFIX,kemono.su
     - IP-CIDR,13.107.21.200/32,no-resolve
     - DOMAIN-SUFFIX,msftconnecttest.com
-    - DOMAIN-SUFFIX,chii.in
     - DOMAIN-SUFFIX,github.io
     - DOMAIN-SUFFIX,twimg.com
     - DOMAIN-KEYWORD,1lib
