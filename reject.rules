@@ -1,0 +1,4 @@
+payload:
+    - DOMAIN-SUFFIX,api.installer.xiaomi.com
+    - DOMAIN-SUFFIX,sec.miui.com
+    - DOMAIN-SUFFIX,avlyun.com
