@@ -18,6 +18,8 @@ payload:
   - DOMAIN-KEYWORD,pt
   - DOMAIN-KEYWORD,bt
   - DOMAIN-KEYWORD,skyey
+  - DOMAIN-KEYWORD,parsec
+  - DOMAIN,parsec.app
   - DOMAIN,1337.abcvg.info
   - DOMAIN,1c.premierzal.ru
   - DOMAIN,6.pocketnet.app
