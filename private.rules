@@ -22,4 +22,4 @@ payload:
     - DOMAIN-KEYWORD,zlib
     - DOMAIN-KEYWORD,hentai
     - DOMAIN-KEYWORD,siglelogin
-    - IP-CIDR,91.216.110.52/32
+    - IP-CIDR,91.216.110.52/32,no-resolve
