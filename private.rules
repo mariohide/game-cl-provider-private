@@ -14,6 +14,7 @@ payload:
     - DOMAIN-SUFFIX,pixiv.net
     - DOMAIN-SUFFIX,exhentai.org
     - DOMAIN-SUFFIX,e-hentai.org
+    - DOMAIN-SUFFIX,x.com
     - DOMAIN-KEYWORD,kemono
     - DOMAIN-SUFFIX,kemono.su
     - DOMAIN-SUFFIX,github.io
