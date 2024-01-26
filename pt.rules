@@ -17,6 +17,8 @@ payload:
   - DOMAIN-KEYWORD,Joker
   - DOMAIN-KEYWORD,pt
   - DOMAIN-KEYWORD,bt
+  - DOMAIN-KEYWORD,djjc
+  - DOMAIN-KEYWORD,djjsvip
   - DOMAIN-KEYWORD,skyey
   - DOMAIN-KEYWORD,parsec
   - DOMAIN,parsec.app
