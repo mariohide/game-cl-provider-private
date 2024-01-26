@@ -309,9 +309,6 @@ payload:
   - IP-CIDR,52.58.128.163/32,no-resolve
   - IP-CIDR,91.216.110.52/32,no-resolve
   - DOMAIN-SUFFIX,desync.com
-  - DOMAIN-SUFFIX,bgm.tv
-  - DOMAIN-SUFFIX,chii.in
-  - DOMAIN-SUFFIX,bangumi.tv
   - DOMAIN-SUFFIX,sda1.dev
   - DOMAIN-SUFFIX,bangumi.online
   - IP-CIDR,104.21.235.73/32,no-resolve
