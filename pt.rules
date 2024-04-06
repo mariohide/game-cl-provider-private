@@ -15,6 +15,8 @@ payload:
   - DOMAIN-KEYWORD,get_peer
   - DOMAIN-KEYWORD,passkey=
   - DOMAIN-KEYWORD,Joker
+  - DOMAIN-KEYWORD,pt
+  - DOMAIN-KEYWORD,bt
   - DOMAIN-KEYWORD,djjc
   - DOMAIN-KEYWORD,djjsvip
   - DOMAIN-KEYWORD,skyey
@@ -310,5 +312,7 @@ payload:
   - IP-CIDR,91.216.110.52/32,no-resolve
   - DOMAIN-SUFFIX,desync.com
   - DOMAIN-SUFFIX,sda1.dev
-
+  - DOMAIN-SUFFIX,bangumi.online
+  - IP-CIDR,104.21.235.73/32,no-resolve
+  - IP-CIDR,104.21.235.74/32,no-resolve
   
