@@ -15,8 +15,6 @@ payload:
   - DOMAIN-KEYWORD,get_peer
   - DOMAIN-KEYWORD,passkey=
   - DOMAIN-KEYWORD,Joker
-  - DOMAIN-KEYWORD,pt
-  - DOMAIN-KEYWORD,bt
   - DOMAIN-KEYWORD,djjc
   - DOMAIN-KEYWORD,djjsvip
   - DOMAIN-KEYWORD,skyey
