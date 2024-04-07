@@ -25,6 +25,4 @@ payload:
     - DOMAIN-KEYWORD,siglelogin
     - IP-CIDR,91.216.110.52/32,no-resolve
     - DOMAIN-SUFFIX,coze.com
-    - DOMAIN,bgm.tv
-    - DOMAIN,bangumi.tv
-    - DOMAIN,chii.in
+
