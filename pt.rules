@@ -1,5 +1,6 @@
 payload:
   - DOMAIN-KEYWORD,ddys
+  - DOMAIN-KEYWORD,cdn
   - DOMAIN-KEYWORD,mihoyo
   - DOMAIN-KEYWORD,hoyoverse
   - DOMAIN-KEYWORD,tracker
