@@ -1,6 +1,5 @@
 payload:
   - DOMAIN-KEYWORD,ddys
-  - DOMAIN-KEYWORD,cdn
   - DOMAIN-KEYWORD,mihoyo
   - DOMAIN-KEYWORD,hoyoverse
   - DOMAIN-KEYWORD,tracker
@@ -319,5 +318,5 @@ payload:
   - DOMAIN,bgm.tv
   - DOMAIN,bangumi.tv
   - DOMAIN,chii.in
-  - DOMAIN,amazingseasuncdn.com
+
   
