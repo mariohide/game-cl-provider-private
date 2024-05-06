@@ -27,8 +27,7 @@ payload:
     - DOMAIN-SUFFIX,coze.com
     - DOMAIN-SUFFIX,config.getsync.com
     - DOMAIN-SUFFIX,config.resilio.com
-    - IP-CIDR,173.244.217.42/32,no-resolve
-    - IP-CIDR,209.95.56.60/32,no-resolve
-    - IP-CIDR,107.182.230.198/32,no-resolve
-    - IP-CIDR,173.244.209.150/32,no-resolve
-    - IP-CIDR,54.235.182.157/32,no-resolve
+    - IP-CIDR,23.111.157.86/32,no-resolve
+    - IP-CIDR,66.165.233.194/32,no-resolve
+    - IP-CIDR,66.206.5.74/32,no-resolve
+    - IP-CIDR,66.165.255.194/32,no-resolve
