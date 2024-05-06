@@ -320,5 +320,9 @@ payload:
   - DOMAIN,bgm.tv
   - DOMAIN,bangumi.tv
   - DOMAIN,chii.in
-
-  
+  - DOMAIN,config.getsync.com
+  - DOMAIN,config.resilio.com
+  - IP-CIDR,23.111.157.86/32,no-resolve
+  - IP-CIDR,66.165.233.194/32,no-resolve
+  - IP-CIDR,66.206.5.74/32,no-resolve
+  - IP-CIDR,6.165.255.194/32,no-resolve
