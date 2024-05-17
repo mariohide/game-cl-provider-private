@@ -25,3 +25,5 @@ payload:
     - DOMAIN-KEYWORD,siglelogin
     - IP-CIDR,91.216.110.52/32,no-resolve
     - DOMAIN-SUFFIX,coze.com
+    - DOMAIN-SUFFIX,openai.com
+    - DOMAIN-SUFFIX,chatgpt.com
