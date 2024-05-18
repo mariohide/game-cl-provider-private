@@ -1,6 +1,5 @@
 payload:
   - DOMAIN-KEYWORD,ddys
-  - DOMAIN-KEYWORD,cdn
   - DOMAIN,amazingseasuncdn.com
   - DOMAIN-KEYWORD,mihoyo
   - DOMAIN-KEYWORD,hoyoverse
