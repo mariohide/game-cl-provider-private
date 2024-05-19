@@ -18,8 +18,6 @@ payload:
   - DOMAIN-KEYWORD,Joker
   - DOMAIN-KEYWORD,pt
   - DOMAIN-KEYWORD,bt
-  - DOMAIN-KEYWORD,djjc
-  - DOMAIN-KEYWORD,djjsvip
   - DOMAIN-KEYWORD,skyey
   - DOMAIN-KEYWORD,parsec
   - DOMAIN,parsec.app
@@ -313,8 +311,6 @@ payload:
   - IP-CIDR,91.216.110.52/32,no-resolve
   - DOMAIN-SUFFIX,desync.com
   - DOMAIN-SUFFIX,sda1.dev
-  - IP-CIDR,104.21.235.73/32,no-resolve
-  - IP-CIDR,104.21.235.74/32,no-resolve
   - DOMAIN,bgm.tv
   - DOMAIN,bangumi.tv
   - DOMAIN,chii.in
