@@ -20,9 +20,6 @@ payload:
   - DOMAIN-KEYWORD,bt
   - DOMAIN-KEYWORD,skyey
   - DOMAIN-KEYWORD,parsec
-  - DOMAIN,parsec.app
-  - DOMAIN,sl916.com
-  - DOMAIN-KEYWORD,sl916
   - DOMAIN,v1.mk
   - IP-CIDR,20.198.162.78/32,no-resolve
   - DOMAIN,1337.abcvg.info
