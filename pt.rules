@@ -320,3 +320,4 @@ payload:
   - IP-CIDR,66.165.255.194/32,no-resolve
   - DOMAIN-SUFFIX,bangumi.online
   - DOMAIN-SUFFIX,127.net
+  - DOMAIN-SUFFIX,wetest.net
