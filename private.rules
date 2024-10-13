@@ -28,3 +28,4 @@ payload:
     - DOMAIN-SUFFIX,openai.com
     - DOMAIN-SUFFIX,chatgpt.com
     - DOMAIN-SUFFIX,figma.com
+    - DOMAIN-SUFFIX,quickconnect.to
