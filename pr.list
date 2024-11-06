@@ -6,13 +6,22 @@ DOMAIN-SUFFIX,alchemystars.com
 DOMAIN-SUFFIX,intlgame.com
 DOMAIN-SUFFIX,worldflipper.jp
 DOMAIN-SUFFIX,shadowverse.jp
+DOMAIN-KEYWORD,shadowverse
+DOMAIN-KEYWORD,hentai
+DOMAIN-KEYWORD,pixiv
+DOMAIN-KEYWORD,tntv2
 DOMAIN-SUFFIX,pixiv.net
 DOMAIN-SUFFIX,exhentai.org
 DOMAIN-SUFFIX,e-hentai.org
 DOMAIN-SUFFIX,x.com
+DOMAIN-KEYWORD,kemono
 DOMAIN-SUFFIX,kemono.su
 DOMAIN-SUFFIX,github.io
 DOMAIN-SUFFIX,twimg.com
+DOMAIN-KEYWORD,1lib
+DOMAIN-KEYWORD,zlib
+DOMAIN-KEYWORD,hentai
+DOMAIN-KEYWORD,siglelogin
 IP-CIDR,91.216.110.52/32,no-resolve
 DOMAIN-SUFFIX,coze.com
 DOMAIN-SUFFIX,openai.com
@@ -20,3 +29,4 @@ DOMAIN-SUFFIX,chatgpt.com
 DOMAIN-SUFFIX,figma.com
 DOMAIN-SUFFIX,quickconnect.to
 DOMAIN-SUFFIX,quickconnect.cn
+DOMAIN-KEYWORD,quickconnect
