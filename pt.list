@@ -304,3 +304,5 @@ IP-CIDR,66.165.255.194/32,no-resolve
 DOMAIN-SUFFIX,127.net
 DOMAIN-SUFFIX,wetest.net
 DOMAIN-SUFFIX,bsbsb.top
+IP-CIDR,120.53.53.53/32,no-resolve
+IP-CIDR,1.12.12.12/32,no-resolve
