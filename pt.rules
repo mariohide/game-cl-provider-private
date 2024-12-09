@@ -1,6 +1,5 @@
 payload:
   - DOMAIN-KEYWORD,ddys
-  - DOMAIN,amazingseasuncdn.com
   - DOMAIN-KEYWORD,mihoyo
   - DOMAIN-KEYWORD,hoyoverse
   - DOMAIN-KEYWORD,tracker
@@ -17,9 +16,13 @@ payload:
   - DOMAIN-KEYWORD,passkey=
   - DOMAIN-KEYWORD,Joker
   - DOMAIN-KEYWORD,skyey
+  - DOMAIN-KEYWORD,sl916
+  - DOMAIN-SUFFIX,googleapis.cn
+  - DOMAIN-SUFFIX,xn--ngstr-lra8j.com
+  - DOMAIN-SUFFIX,xn-–ngstr-cn-8za9o.com
+  - DOMAIN-SUFFIX,amazingseasuncdn.com
   - DOMAIN,parsec.app
   - DOMAIN,sl916.com
-  - DOMAIN-KEYWORD,sl916
   - DOMAIN,wetest.net
   - DOMAIN,v1.mk
   - IP-CIDR,20.198.162.78/32,no-resolve
@@ -244,7 +247,7 @@ payload:
   - DOMAIN-SUFFIX,hdtime.org
   - DOMAIN-SUFFIX,hdupt.com
   - DOMAIN-SUFFIX,hdzone.me
-  - DOMAIN-SUFFIX,hhanclub.top
+  - DOMAIN-SUFFIX,hhanclub.top  
   - DOMAIN-SUFFIX,hitpt.com
   - DOMAIN-SUFFIX,hitpt.org
   - DOMAIN-SUFFIX,hudbt.hust.edu.cn
@@ -300,6 +303,8 @@ payload:
   - DOMAIN-SUFFIX,u2.dmhy.org
   - DOMAIN-SUFFIX,uhdbits.org
   - DOMAIN-SUFFIX,xauat6.edu.cn
+  - DOMAIN-SUFFIX,istoreos.com
+  - DOMAIN-SUFFIX,ddnsto.com
   - IP-CIDR,119.28.71.45/32,no-resolve
   - IP-CIDR,184.105.151.166/32,no-resolve
   - IP-CIDR,207.241.226.111/32,no-resolve
@@ -317,3 +322,4 @@ payload:
   - IP-CIDR,66.165.255.194/32,no-resolve
   - DOMAIN-SUFFIX,127.net
   - DOMAIN-SUFFIX,wetest.net
+  - DOMAIN-SUFFIX,bsbsb.top
