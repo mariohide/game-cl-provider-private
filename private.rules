@@ -4,6 +4,7 @@ payload:
     - DOMAIN-SUFFIX,dmmapis.com
     - DOMAIN-SUFFIX,alchemystars.jp
     - DOMAIN-SUFFIX,alchemystars.com
+    - DOMAIN-SUFFIX,imgur.com
     - DOMAIN-SUFFIX,intlgame.com
     - DOMAIN-SUFFIX,worldflipper.jp
     - DOMAIN-SUFFIX,shadowverse.jp
