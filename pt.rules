@@ -26,6 +26,7 @@ payload:
   - DOMAIN-SUFFIX,aki-game.net
   - IP-CIDR,13.107.21.239/32,no-resolve
   - IP-CIDR,140.82.112.25/32,no-resolve
+  - DOMAIN-SUFFIX,listdl.com
   - DOMAIN,parsec.app
   - DOMAIN,sl916.com
   - DOMAIN,wetest.net
