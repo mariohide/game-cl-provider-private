@@ -15,6 +15,7 @@ payload:
     - DOMAIN-KEYWORD,tntv2
     - DOMAIN-SUFFIX,pixiv.net
     - DOMAIN-SUFFIX,exhentai.org
+    - DOMAIN-SUFFIX,pilipili.club
     - DOMAIN-SUFFIX,e-hentai.org
     - DOMAIN-SUFFIX,x.com
     - DOMAIN-KEYWORD,kemono
