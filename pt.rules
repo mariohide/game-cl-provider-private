@@ -1,5 +1,4 @@
 payload:
-  - DOMAIN-SUFFIX,googleads.g.doubleclick.net
   - DOMAIN-SUFFIX,intel.com
   - DOMAIN-KEYWORD,ddys
   - DOMAIN-KEYWORD,mihoyo
