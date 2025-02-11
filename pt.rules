@@ -327,10 +327,10 @@ payload:
   - IP-CIDR,91.216.110.52/32,no-resolve
   - DOMAIN-SUFFIX,istoreos.com
   - DOMAIN-SUFFIX,ddnsto.com
-//  - IP-CIDR,23.111.157.86/32,no-resolve
-//  - IP-CIDR,66.165.233.194/32,no-resolve
-//  - IP-CIDR,66.206.5.74/32,no-resolve
-//  - IP-CIDR,66.165.255.194/32,no-resolve
+  - IP-CIDR,23.111.157.86/32,no-resolve
+  - IP-CIDR,66.165.233.194/32,no-resolve
+  - IP-CIDR,66.206.5.74/32,no-resolve
+  - IP-CIDR,66.165.255.194/32,no-resolve
   - DOMAIN-SUFFIX,desync.com
   - DOMAIN-SUFFIX,sda1.dev
   - DOMAIN-SUFFIX,127.net
