@@ -331,4 +331,7 @@ payload:
   - DOMAIN-SUFFIX,127.net
   - DOMAIN-SUFFIX,wetest.net
   - DOMAIN-SUFFIX,bsbsb.top
-
+  - IP-CIDR,23.111.157.86/32,no-resolve
+  - IP-CIDR,66.165.233.194/32,no-resolve
+  - IP-CIDR,66.206.5.74/32,no-resolve
+  - IP-CIDR,66.165.255.194/32,no-resolve
