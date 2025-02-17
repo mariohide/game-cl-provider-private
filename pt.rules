@@ -338,3 +338,8 @@ payload:
   - DOMAIN-SUFFIX,pilipiliultra.com
   - DOMAIN-SUFFIX,pilipili.club
   - DOMAIN-SUFFIX,dcg.microsoft.com
+  - IP-CIDR,217.254.162.198/32,no-resolve
+  - IP-CIDR,23.234.83.177/32,no-resolve
+  - IP-CIDR,54.38.47.202/32,no-resolve
+  - IP-CIDR,176.113.74.141/32,no-resolve
+  - IP-CIDR,104.154.127.247/32,no-resolve
