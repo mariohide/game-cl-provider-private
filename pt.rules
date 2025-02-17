@@ -30,7 +30,6 @@ payload:
   - DOMAIN,sl916.com
   - DOMAIN,wetest.net
   - DOMAIN,v1.mk
-  - IP-CIDR,20.198.162.78/32,no-resolve
   - DOMAIN,1337.abcvg.info
   - DOMAIN,1c.premierzal.ru
   - DOMAIN,6.pocketnet.app
