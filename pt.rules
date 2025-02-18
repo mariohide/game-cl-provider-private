@@ -328,3 +328,21 @@ payload:
   - DOMAIN-SUFFIX,dcg.microsoft.com
   - DOMAIN-SUFFIX,googleads.g.doubleclick.net
   - DOMAIN-SUFFIX,webview.unityads.unity3d.com
+  - IP-CIDR,217.254.162.198/32,no-resolve
+  - IP-CIDR,23.234.83.177/32,no-resolve
+  - IP-CIDR,54.38.47.202/32,no-resolve
+  - IP-CIDR,176.113.74.141/32,no-resolve
+  - IP-CIDR,104.154.127.247/32,no-resolve
+  - IP-CIDR,43.175.103.109/32,no-resolve
+  - IP-CIDR,13.107.21.239/32,no-resolve
+  - IP-CIDR,140.82.112.25/32,no-resolve
+  - IP-CIDR,129.226.127.249/32,no-resolve
+  - IP-CIDR,124.161.87.43/32,no-resolve
+  - IP-CIDR,219.141.248.152/32,no-resolve
+  - IP-CIDR,183.237.254.194/32,no-resolve  
+  - IP-CIDR,150.109.107.145/32,no-resolve
+  - IP-CIDR,216.239.35.0/64,no-resolve
+  - IP-CIDR,104.16.132.229/32,no-resolve
+  - IP-CIDR,35.186.224.24/32,no-resolve
+  - IP-CIDR,104.26.12.31/32,no-resolve
+  - IP-CIDR,20.198.162.78/32,no-resolve
