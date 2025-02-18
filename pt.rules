@@ -325,8 +325,6 @@ payload:
   - IP-CIDR,66.165.233.194/32,no-resolve
   - IP-CIDR,66.206.5.74/32,no-resolve
   - IP-CIDR,66.165.255.194/32,no-resolve
-  - DOMAIN-SUFFIX,pilipiliultra.com
-  - DOMAIN-SUFFIX,pilipili.club
   - DOMAIN-SUFFIX,dcg.microsoft.com
   - DOMAIN-SUFFIX,googleads.g.doubleclick.net
   - DOMAIN-SUFFIX,webview.unityads.unity3d.com
