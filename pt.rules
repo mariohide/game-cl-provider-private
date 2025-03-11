@@ -21,7 +21,7 @@ payload:
   - DOMAIN-SUFFIX,aowu.tv
   - DOMAIN-SUFFIX,googleapis.cn
   - DOMAIN-SUFFIX,xn--ngstr-lra8j.com
-  - DOMAIN-SUFFIX,xn-–ngstr-cn-8za9o.com
+  - DOMAIN-SUFFIX,xn--ngstr-cn-8za9o.com
   - IP-CIDR,58.63.233.2/32,no-resolve
   - IP-CIDR,58.63.233.3/32,no-resolve
   - IP-CIDR,113.108.239.197/32,no-resolve
@@ -254,7 +254,7 @@ payload:
   - DOMAIN-SUFFIX,hdtime.org
   - DOMAIN-SUFFIX,hdupt.com
   - DOMAIN-SUFFIX,hdzone.me
-  - DOMAIN-SUFFIX,hhanclub.top  
+  - DOMAIN-SUFFIX,hhanclub.top
   - DOMAIN-SUFFIX,hitpt.com
   - DOMAIN-SUFFIX,hitpt.org
   - DOMAIN-SUFFIX,hudbt.hust.edu.cn
