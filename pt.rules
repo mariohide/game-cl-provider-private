@@ -1,5 +1,6 @@
 payload:
   - DOMAIN-SUFFIX,intel.com
+  - DOMAIN-SUFFIX,emby.wtf
   - DOMAIN-KEYWORD,ddys
   - DOMAIN-KEYWORD,mihoyo
   - DOMAIN-KEYWORD,hoyoverse
