@@ -262,7 +262,7 @@ rule-providers:
   bt: {!!merge <<: *ip, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/bt.mrs"}
   pt: {!!merge <<: *ip, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/pt.mrs"}
   Google@CN_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/google@cn.mrs"}
-  GoogleFCM: {!!merge <<: *domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/googlefcm.mrs"}
+  GoogleFCM: {!!merge <<: *domain, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/googlefcm.mrs"}
 
 
   private_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
