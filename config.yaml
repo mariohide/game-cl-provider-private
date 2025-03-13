@@ -1,31 +1,44 @@
-port: 8080
-socks-port: 1080
-mixed-port: 7890
-redir-port: 7891
-tproxy-port: 7892
-mode: rule
-log-level: warning
+proxy-providers:
+  Airport_01:
+    type: http
+    interval: 1800
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+    proxy: 全球直连
+    url: "your sub link"
+    path: ./proxy_provider/subscription_1.yaml
+# 全局配置
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7894
+ipv6: false
 allow-lan: true
 unified-delay: true
+tcp-concurrent: true
+  
+# 控制面板
 external-controller: 0.0.0.0:9090
 secret: "123456"
-external-ui: ui
-external-ui-name: yacd
-external-ui-url: https://ghp.ci/https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
-tcp-concurrent: true
-enable-process: false
+external-ui: "/etc/mihomo/run/ui"
+external-ui-name: zashboard
+external-ui-url: "https://ghfast.top/https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
+
+# 匹配进程 always/strict/off
+find-process-mode: strict
+global-client-fingerprint: chrome
 keep-alive-idle: 600
-keep-alive-interval: 15
-ipv6: false
-experimental:
-  ignore-resolve-fail: true
-  sniff-tls-sni: true
-  tracing: true
-hosts:
-  "localhost": 127.0.0.1
+keep-alive-interval: 30
+
+# 策略组选择和fakeip缓存
 profile:
   store-selected: true
   store-fake-ip: true
+  
+# 流量嗅探
 sniffer:
   enable: true
   sniff:
@@ -37,56 +50,41 @@ sniffer:
     QUIC:
       ports: [443, 8443]
   force-domain:
-    - "+.v2ex.com"
-    - www.google.com
-    - google.com
+    - +.v2ex.com
   skip-domain:
     - "Mijia Cloud"
-    - dlg.io.mi.com
+    - "dlg.io.mi.com"
     - "+.push.apple.com"
     - "+.apple.com"
+    
+# 代理模式
 tun:
-  enable: false
-  listen: 0.0.0.0:53
-  stack: gvisor
-  device: mihomo
+  enable: true
+  stack: mixed
   dns-hijack:
     - "any:53"
     - "tcp://any:53"
-  auto-redir: true
   auto-route: true
+  auto-redirect: true
   auto-detect-interface: true
-  mtu: 9000
-  gso: true
-  gso-max-size: 65536
-  endpoint-independent-nat: false
+  
+# DNS模块
 dns:
   enable: true
+  listen: 0.0.0.0:1053
   ipv6: false
-  default-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-  proxy-server-nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  direct-nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  fallback:
-    - https://dns.cloudflare.com/dns-query
-  nameserver-policy:
-    geosite:cn,private:
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
-    geosite:geolocation-!cn:
-      - https://dns.cloudflare.com/dns-query
+  respect-rules: true
+  # 模式切换 redir-host / fake-ip
   enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
+  fake-ip-range: 28.0.0.1/8
+  # 模式切换 whitelist/blacklist 
+  # 黑名单模式表示如果匹配成功则不返回 Fake-IP, 白名单模式时只有匹配成功才返回 Fake-IP
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
+    - "rule-set:private_domain,cn_domain"
+    - geosite:cn
+    - "+.services.googleapis.cn"
+    - "+.xn--ngstr-lra8j.com"
     - 'stun.*.*'
     - 'stun.*.*.*'
     - '+.stun.*.*'
@@ -141,1012 +139,143 @@ dns:
     - 'GC._msDCS.*.*'
     - 'DC._msDCS.*.*'
     - 'PDC._msDCS.*.*'
-    - geosite:cn
-  use-hosts: true
-  listen: 0.0.0.0:1053
-  respect-rules: true
-  prefer-h3: true
-  use-system-hosts: true
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  direct-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fallback:
+    - https://dns.cloudflare.com/dns-query
+  nameserver-policy:
+    'rule-set:GoogleFCM': 
+      - 223.5.5.5
+      - 119.29.29.29
+    geosite:cn,private:
+      - 223.5.5.5
+      - 119.29.29.29
+    geosite:geolocation-!cn:
+      - https://dns.cloudflare.com/dns-query
+
 geodata-mode: false
 geodata-loader: standard
 geox-url:
-  geosite: https://ghp.ci/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat
-  mmdb: https://ghp.ci/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.metadb
-  geoip: https://ghp.ci/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat
-  asn: https://ghp.ci/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
+  geosite: https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat
+  mmdb: https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.metadb
+  geoip: https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat
+  asn: https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
 geo-auto-update: true
 geo-update-interval: 24
-###开始建立锚点
-
-# 所有节点
-all: &all {type: select, use: [订阅 1, 订阅 2]}
-filtered_lines: &filtered_lines
-  - *all # 处理重复节点
-final_lines: *filtered_lines
-# 备用应急
-backup: &backup {type: select, url: "http://www.google.com/generate_204", interval: 300, tolerance: 50, lazy: true, use: [订阅 1], filter: "(?i)津巴布韦|\U0001F1FF\U0001F1FC|ZW|Zimbabwe|越南|\U0001F1FB\U0001F1F3|VNVietnam|乌克兰|\U0001F1FA\U0001F1E6|UA|Ukraine|土耳其|\U0001F1F9\U0001F1F7|Turkey|法国|都柏林|\U0001F1EB\U0001F1F7|FR|France|阿根廷|\U0001F1E6\U0001F1F7|AR|Argentina|印度|\U0001F1EE\U0001F1F3|IN|India|加拿大|\U0001F1E8\U0001F1E6|CA|Canada|马来西亚|\U0001F1F2\U0001F1FE|MY|Malaysia|德国|\U0001F1E9\U0001F1EA|DE|Germany|荷兰|\U0001F1F3\U0001F1F1|NL|Netherlands|泰国|\U0001F1F9\U0001F1ED|TH|Thailand|澳大利亚|\U0001F1E6\U0001F1FA|AU|Australia|西班牙|\U0001F1EA\U0001F1F8|ES|Spain|爱沙尼亚|\U0001F1EA\U0001F1EA|EE|Estonia|英国|\U0001F1EC\U0001F1E7|United Kingdom|巴西|\U0001F1E7\U0001F1F7|BR|Brazil|印度|\U0001F1EE\U0001F1F3|IN|India|阿联酋迪拜|\U0001F1E6\U0001F1EA|AE|United Arab Emirates|南非|\U0001F1FF\U0001F1E6|ZA|South Africa|奥地利|\U0001F1E6\U0001F1F9|AT|Austria|哈萨克斯坦|\U0001F1F0\U0001F1FF|KZ|Kazakhstan|立陶宛|\U0001F1F1\U0001F1F9|LT|Lithuania|瑞士|\U0001F1E8\U0001F1ED|CH|Switzerland|瑞典|\U0001F1F8\U0001F1EA|SE|Sweden"}
-# 亚洲地区
-Asia: &Asia {type: selectk, url: "http://www.google.com/generate_204", interval: 300, tolerance: 50, lazy: true, use: [订阅 1], filter: "(?i)阿富汗|\U0001F1E6\U0001F1EB|AF|Afghanistan|亚美尼亚|\U0001F1E6\U0001F1F2|AM|Armenia|阿塞拜疆|\U0001F1E6\U0001F1FF|AZ|Azerbaijan|孟加拉国|\U0001F1E7\U0001F1E9|BD|Bangladesh|不丹|\U0001F1E7\U0001F1F9|BT|Bhutan|文莱|\U0001F1E7\U0001F1F3|BN|Brunei|柬埔寨|\U0001F1F0\U0001F1ED|KH|Cambodia|中国|\U0001F1E8\U0001F1F3|CN|China|塞浦路斯|\U0001F1E8\U0001F1FE|CY|Cyprus|东帝汶|\U0001F1F9\U0001F1F1|TL|Timor-Leste|格鲁吉亚|\U0001F1EC\U0001F1EA|GE|Georgia|印度尼西亚|\U0001F1EE\U0001F1E9|ID|Indonesia|伊朗|\U0001F1EE\U0001F1F7|IR|Iran|伊拉克|\U0001F1EE\U0001F1F6|IQ|Iraq|以色列|\U0001F1EE\U0001F1F1|IL|Israel|约旦|\U0001F1EF\U0001F1F4|JO|Jordan|哈萨克斯坦|\U0001F1F0\U0001F1FF|KZ|Kazakhstan|科威特|\U0001F1F0\U0001F1FC|KW|Kuwait|吉尔吉斯斯坦|\U0001F1F0\U0001F1EC|KG|Kyrgyzstan|老挝|\U0001F1F1\U0001F1E6|LA|Laos|黎巴嫩|\U0001F1F1\U0001F1E7|LB|Lebanon|马来西亚|\U0001F1F2\U0001F1FE|MY|Malaysia|马尔代夫|\U0001F1F2\U0001F1FB|MV|Maldives|蒙古|\U0001F1F2\U0001F1F3|MN|Mongolia|缅甸|\U0001F1F2\U0001F1F2|MM|Myanmar|尼泊尔|\U0001F1F3\U0001F1F5|NP|Nepal|朝鲜|\U0001F1F0\U0001F1F5|KP|North Korea|阿曼|\U0001F1F4\U0001F1F2|OM|Oman|巴基斯坦|\U0001F1F5\U0001F1F0|PK|Pakistan|巴勒斯坦|\U0001F1F5\U0001F1F8|PS|Palestine|菲律宾|\U0001F1F5\U0001F1ED|PH|Philippines|卡塔尔|\U0001F1F6\U0001F1E6|QA|Qatar|沙特阿拉伯|\U0001F1F8\U0001F1E6|SA|Saudi Arabia|斯里兰卡|\U0001F1F1\U0001F1F0|LK|Sri Lanka|叙利亚|\U0001F1F8\U0001F1FE|SY|Syria|塔吉克斯坦|\U0001F1F9\U0001F1EF|TJ|Tajikistan|泰国|\U0001F1F9\U0001F1ED|TH|Thailand|土库曼斯坦|\U0001F1F9\U0001F1F2|TM|Turkmenistan|阿联酋|\U0001F1E6\U0001F1EA|AE|United Arab Emirates|乌兹别克斯坦|\U0001F1FA\U0001F1FF|UY|Uzbekistan|也门|\U0001F1FE\U0001F1EA|YE|Yemen|越南|\U0001F1FB\U0001F1F3|VNVietnam"}
-# 欧洲地区
-Europe: &Europe {type: select, url: "http://www.google.com/generate_204", interval: 300, tolerance: 50, lazy: true, use: [订阅 1], filter: "(?i)阿尔巴尼亚|\U0001F1E6\U0001F1F1|AL|Albania|安道尔|\U0001F1E6\U0001F1E9|AD|Andorra|亚美尼亚|\U0001F1E6\U0001F1F2|AM|Armenia|奥地利|\U0001F1E6\U0001F1F9|AT|Austria|阿塞拜疆|\U0001F1E6\U0001F1FF|AZ|Azerbaijan|白俄罗斯|\U0001F1E7\U0001F1FE|BY|Belarus|比利时|\U0001F1E7\U0001F1EA|BE|Belgium|波黑|\U0001F1E7\U0001F1E6|BA|Bosnia and Herzegovina|保加利亚|\U0001F1E7\U0001F1EC|BG|Bulgaria|克罗地亚|\U0001F1ED\U0001F1F7|HR|Croatia|塞浦路斯|\U0001F1E8\U0001F1FE|CY|Cyprus|捷克|\U0001F1E8\U0001F1FF|CZ|Czech Republic|丹麦|\U0001F1E9\U0001F1F0|DK|Denmark|爱沙尼亚|\U0001F1EA\U0001F1EA|EE|Estonia|芬兰|\U0001F1EB\U0001F1EE|FI|Finland|格鲁吉亚|\U0001F1EC\U0001F1EA|GE|Georgia|希腊|\U0001F1EC\U0001F1F7|GR|Greece|匈牙利|\U0001F1ED\U0001F1FA|HU|Hungary|冰岛|\U0001F1EE\U0001F1F8|IS|Iceland|爱尔兰|\U0001F1EE\U0001F1EA|IE|Ireland|意大利|\U0001F1EE\U0001F1F9|IT|Italy|拉脱维亚|\U0001F1F1\U0001F1FB|LV|Latvia|列支敦士登|\U0001F1F1\U0001F1EE|LI|Liechtenstein|立陶宛|\U0001F1F1\U0001F1F9|LT|Lithuania|卢森堡|\U0001F1F1\U0001F1FA|LU|Luxembourg|马其顿|\U0001F1F2\U0001F1F0|MK|Macedonia|马耳他|\U0001F1F2\U0001F1F9|MT|Malta|摩尔多瓦|\U0001F1F2\U0001F1E9|MD|Moldova|摩纳哥|\U0001F1F2\U0001F1E8|MC|Monaco|黑山|\U0001F1F2\U0001F1EA|ME|Montenegro|挪威|\U0001F1F3\U0001F1F4|NO|Norway|波兰|\U0001F1F5\U0001F1F1|PL|Poland|葡萄牙|\U0001F1F5\U0001F1F9|PT|Portugal|罗马尼亚|\U0001F1F7\U0001F1F4|RO|Romania|圣马力诺|\U0001F1F8\U0001F1F2|SM|San Marino|塞尔维亚|\U0001F1F7\U0001F1F8|RS|Serbia|斯洛伐克|\U0001F1F8\U0001F1F0|SK|Slovakia|斯洛文尼亚|\U0001F1F8\U0001F1EE|SI|Slovenia|西班牙|\U0001F1EA\U0001F1F8|ES|Spain|瑞典|\U0001F1F8\U0001F1EA|SE|Sweden|瑞士|\U0001F1E8\U0001F1ED|CH|Switzerland|土耳其|\U0001F1F9\U0001F1F7|TR|Turkey|乌克兰|\U0001F1FA\U0001F1E6|UA|Ukraine|梵蒂冈|\U0001F1FB\U0001F1E6|VA|Vatican City"}
-# 北美洲地区
-America: &America {type: select, url: "http://www.google.com/generate_204", interval: 300, tolerance: 50, lazy: true, use: [订阅 1], filter: "(?i)安提瓜和巴布达|\U0001F1E6\U0001F1EC|AG|Antigua and Barbuda|巴哈马|\U0001F1E7\U0001F1F8|BS|Bahamas|巴巴多斯|\U0001F1E7\U0001F1E7|BB|Barbados|伯利兹|\U0001F1E7\U0001F1FF|BZ|Belize|哥斯达黎加|\U0001F1E8\U0001F1F7|CR|Costa Rica|古巴|\U0001F1E8\U0001F1FA|CU|Cuba|多米尼克|\U0001F1E9\U0001F1F2|DM|Dominica|多米尼加|\U0001F1E9\U0001F1F4|DO|Dominican Republic|萨尔瓦多|\U0001F1F8\U0001F1FB|SV|El Salvador|格林纳达|\U0001F1EC\U0001F1E9|GD|Grenada|危地马拉|\U0001F1EC\U0001F1F9|GT|Guatemala|海地|\U0001F1ED\U0001F1F9|HT|Haiti|洪都拉斯|\U0001F1ED\U0001F1F3|HN|Honduras|牙买加|\U0001F1EF\U0001F1F2|JM|Jamaica|墨西哥|\U0001F1F2\U0001F1FD|MX|Mexico|尼加拉瓜|\U0001F1F3\U0001F1EE|NI|Nicaragua|巴拿马|\U0001F1F5\U0001F1E6|PA|Panama|圣基茨和尼维斯|\U0001F1F0\U0001F1F3|KN|Saint Kitts and Nevis|圣卢西亚|\U0001F1F1\U0001F1E8|LC|Saint Lucia|圣文森特和格林纳丁斯|\U0001F1FB\U0001F1E8|VC|Saint Vincent and the Grenadines|特立尼达和多巴哥|\U0001F1F9\U0001F1F9|TT|Trinidad and Tobago"}
-# 南美洲地区
-Oceania: &Oceania {type: select, url: "http://www.google.com/generate_204", interval: 300, tolerance: 50, lazy: true, use: [订阅 1], filter: "(?i)阿根廷|\U0001F1E6\U0001F1F7|AR|Argentina|玻利维亚|\U0001F1E7\U0001F1F4|BO|Bolivia|巴西|\U0001F1E7\U0001F1F7|BR|Brazil|智利|\U0001F1E8\U0001F1F1|CL|Chile|哥伦比亚|\U0001F1E8\U0001F1F4|CO|Colombia|厄瓜多尔|\U0001F1EA\U0001F1E8|EC|Ecuador|圭亚那|\U0001F1EC\U0001F1FE|GY|Guyana|巴拉圭|\U0001F1F5\U0001F1FE|PY|Paraguay|秘鲁|\U0001F1F5\U0001F1EA|PE|Peru|苏里南|\U0001F1F8\U0001F1F7|SR|Suriname|特立尼达和多巴哥|\U0001F1F9\U0001F1F9|TT|Trinidad and Tobago|乌拉圭|\U0001F1FA\U0001F1FE|UY|Uruguay|委内瑞拉|\U0001F1FB\U0001F1EA|VE|Venezuela"}
-# 非洲地区
-Africa: &Africa {type: select, url: "http://www.google.com/generate_204", interval: 300, tolerance: 50, lazy: true, use: [订阅 1], filter: "(?i)阿尔及利亚|\U0001F1E9\U0001F1FF|DZ|Algeria|安哥拉|\U0001F1E6\U0001F1F4|AO|Angola|贝宁|\U0001F1E7\U0001F1EF|BJ|Benin|博茨瓦纳|\U0001F1E7\U0001F1FC|BW|Botswana|布基纳法索|\U0001F1E7\U0001F1EB|BF|Burkina Faso|布隆迪|\U0001F1E7\U0001F1EE|BI|Burundi|佛得角|\U0001F1E8\U0001F1FB|CV|Cape Verde|喀麦隆|\U0001F1E8\U0001F1F2|CM|Cameroon|中非共和国|\U0001F1E8\U0001F1EB|CF|Central African Republic|乍得|\U0001F1F9\U0001F1E9|TD|Chad|科摩罗|\U0001F1F0\U0001F1F2|KM|Comoros|刚果（布）|\U0001F1E8\U0001F1EC|CG|Congo (Brazzaville)|刚果（金）|\U0001F1E8\U0001F1E9|CD|Congo (Kinshasa)|科特迪瓦|\U0001F1E8\U0001F1EE|CI|Ivory Coast|吉布提|\U0001F1E9\U0001F1EF|DJ|Djibouti|埃及|\U0001F1EA\U0001F1EC|EG|Egypt|赤道几内亚|\U0001F1EC\U0001F1F6|GQ|Equatorial Guinea|厄立特里亚|\U0001F1EA\U0001F1F7|ER|Eritrea|埃塞俄比亚|\U0001F1EA\U0001F1F9|ET|Ethiopia|加蓬|\U0001F1EC\U0001F1E6|GA|Gabon|冈比亚|\U0001F1EC\U0001F1F2|GM|Gambia|加纳|\U0001F1EC\U0001F1ED|GH|Ghana|几内亚|\U0001F1EC\U0001F1F3|GN|Guinea|几内亚比绍|\U0001F1EC\U0001F1FC|GW|Guinea-Bissau|肯尼亚|\U0001F1F0\U0001F1EA|KE|Kenya|莱索托|\U0001F1F1\U0001F1F8|LS|Lesotho|利比里亚|\U0001F1F1\U0001F1F7|LR|Liberia|利比亚|\U0001F1F1\U0001F1FE|LY|Libya|马达加斯加|\U0001F1F2\U0001F1EC|MG|Madagascar|马拉维|\U0001F1F2\U0001F1FC|MW|Malawi|马里|\U0001F1F2\U0001F1F1|ML|Mali|毛里塔尼亚|\U0001F1F2\U0001F1F7|MR|Mauritania|毛里求斯|\U0001F1F2\U0001F1FA|MU|Mauritius|摩洛哥|\U0001F1F2\U0001F1E6|MA|Morocco|莫桑比克|\U0001F1F2\U0001F1FF|MZ|Mozambique|纳米比亚|\U0001F1F3\U0001F1E6|NA|Namibia|尼日尔|\U0001F1F3\U0001F1EA|NE|Niger|尼日利亚|\U0001F1F3\U0001F1EC|NG|Nigeria|卢旺达|\U0001F1F7\U0001F1FC|RW|Rwanda|圣多美和普林西比|\U0001F1F8\U0001F1F9|ST|São Tomé and Príncipe|塞内加尔|\U0001F1F8\U0001F1F3|SN|Senegal|塞舌尔|\U0001F1F8\U0001F1E8|SC|Seychelles|塞拉利昂|\U0001F1F8\U0001F1F1|SL|Sierra Leone|索马里|\U0001F1F8\U0001F1F4|SO|Somalia|南非|\U0001F1FF\U0001F1E6|ZA|South Africa|南苏丹|\U0001F1F8\U0001F1F8|SS|South Sudan|苏丹|\U0001F1F8\U0001F1E9|SD|Sudan|坦桑尼亚|\U0001F1F9\U0001F1FF|TZ|Tanzania|多哥|\U0001F1F9\U0001F1EC|TG|Togo|突尼斯|\U0001F1F9\U0001F1F3|TN|Tunisia|乌干达|\U0001F1FA\U0001F1EC|UG|Uganda|赞比亚|\U0001F1FF\U0001F1F2|ZM|Zambia|津巴布韦|\U0001F1FF\U0001F1FC|ZW|Zimbabwe"}
-# 精选节点
-best: &best {type: select, url: "http://www.google.com/generate_204", interval: 300, tolerance: 50, lazy: true, use: [订阅 1], filter: "(?i)港|hk|hongkong|hong kong|台|tw|taiwan|日本|jp|japan|新|sg|singapore|\U0001F1FA\U0001F1F2|UM|U.S. Outlying Islands|\U0001F1FA\U0001F1F3|UN|United Nations|美国|洛杉矶|芝加哥|达拉斯|\U0001F1FA\U0001F1F8|US|United States|韩国|\U0001F1F0\U0001F1F7|KR|South Korea"}
-# 自动筛选最快节点
-fly: &fly {type: url-test, url: "http://www.google.com/generate_204", interval: 300, tolerance: 50, lazy: true, use: [订阅 1], filter: "(?i)港|hk|hongkong|hong kong|台|tw|taiwan|日本|jp|japan|新|sg|singapore|美|us|unitedstates|united states|韩国|\U0001F1F0\U0001F1F7|KR|South Korea"}
-# 订阅更新和延迟测试相关
-p: &p {type: http, interval: 21600, health-check: {enable: true, url: "http://www.google.com/generate_204", interval: 1800, filter: "(?i)^(?!unavailable).*$"}}
-# 订阅节点关键字过滤
+   
+proxies:
+- name: "全球直连"
+  type: direct
+  udp: true
+# 锚点
+pr: &pr {type: select, proxies: [🚀 节点选择, 🔯 香港故转, 🔯 日本故转, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 美0.1自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🚀 备用应急, 🌐 全部节点, 全球直连]}
 exclude-filter-list: &exclude-filter "剩余流量|距离下次重置剩余|套餐到期|跳转域名{请勿连接}|邀请好友|关注频道|收费就说明被骗了"
-###结束建立锚点
-proxy-providers: # Meta支持机场通用订阅， 直接替换 url 后方链接使用
-  订阅 1:
-    type: http
-    interval: 10800
-    health-check:
-      enable: true
-      url: https://www.gstatic.com/generate_204
-      interval: 300
-    !!merge <<: *p
-    url: "你的订阅链接"
-    path: ./proxy_provider/subscription_1.yaml
-    exclude-filter: *exclude-filter
-  订阅 2:
-    type: http
-    interval: 3600
-    health-check:
-      enable: true
-      url: https://www.gstatic.com/generate_204
-      interval: 300
-    url: "你的订阅链接"
-    !!merge <<: *p
-    path: ./proxy_provider/subscription_2.yaml
-    exclude-filter: *exclude-filter
+# 策略组
 proxy-groups:
-  - name: "✈️ 国际代理"
-    type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-    proxies:
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ♻️ 自动选择
-      - "\U0001F52F 故障转移"
-      - "\U0001F52E 负载均衡"
-      - ⭕️ 直连
-  - name: "\U0001F30D️亚洲地区"
-    type: select
-    proxies:
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1EE\U0001F1F3 印度节点"
-    !!merge <<: *Asia
-  - name: "\U0001F30D欧洲地区"
-    type: select
-    proxies:
-      - "\U0001F1EC\U0001F1E7 英国节点"
-      - "\U0001F1EB\U0001F1F7 法国节点"
-      - "\U0001F1E9\U0001F1EA 德国节点"
-      - "\U0001F1F3\U0001F1F1 荷兰节点"
-    !!merge <<: *Europe
-  - name: "\U0001F30D非洲地区"
-    type: select
-    !!merge <<: *Africa
-  - name: "\U0001F30D️北美洲地区"
-    type: select
-    proxies:
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F1E8\U0001F1E6 加拿大节点"
-    !!merge <<: *America
-  - name: "\U0001F30D️南美洲地区"
-    type: select
-    !!merge <<: *Oceania
-  - name: "\U0001F1ED\U0001F1F0 香港节点"
-    !!merge <<: *all
-    filter: "(?i)港|\U0001F1ED\U0001F1F0|hk|hongkong|hong kong"
-  - name: "\U0001F1F9\U0001F1FC 台湾节点"
-    !!merge <<: *all
-    filter: "(?i)台|\U0001F1F9\U0001F1FC|tw|taiwan"
-  - name: "\U0001F1F8\U0001F1EC 新加坡节点"
-    !!merge <<: *all
-    filter: "(?i)新|\U0001F1F8\U0001F1EC|sg|singapore"
-  - name: "\U0001F1EF\U0001F1F5 日本节点"
-    !!merge <<: *all
-    filter: "(?i)日本|\U0001F1EF\U0001F1F5|jp|japan"
-  - name: "\U0001F1F7\U0001F1FA 俄罗斯节点"
-    !!merge <<: *all
-    filter: "(?i)俄罗斯|\U0001F1F7\U0001F1FA|RU|Russia"
-  - name: "\U0001F1F0\U0001F1F7 韩国节点"
-    !!merge <<: *all
-    filter: "(?i)韩国|\U0001F1F0\U0001F1F7|KR|South Korea"
-  - name: "\U0001F1FA\U0001F1F8 美国节点"
-    !!merge <<: *all
-    filter: "(?i)美|纽约|\U0001F1FA\U0001F1F2|UM|U.S. Outlying Islands|\U0001F1FA\U0001F1F3|UN|United Nations|洛杉矶|芝加哥|达拉斯|\U0001F1FA\U0001F1F8|US|United States"
-  - name: "\U0001F1E9\U0001F1EA 德国节点"
-    !!merge <<: *all
-    filter: "(?i)德国|\U0001F1E9\U0001F1EA|DE|Germany"
-  - name: "\U0001F1F3\U0001F1F1 荷兰节点"
-    !!merge <<: *all
-    filter: "(?i)荷兰|\U0001F1F3\U0001F1F1|NL|Netherlands"
-  - name: "\U0001F1EE\U0001F1F3 印度节点"
-    !!merge <<: *all
-    filter: "(?i)印度|\U0001F1EE\U0001F1F3|IN|India"
-  - name: "\U0001F1EC\U0001F1E7 英国节点"
-    !!merge <<: *all
-    filter: "(?i)英国|\U0001F1EC\U0001F1E7|United Kingdom"
-  - name: "\U0001F1EB\U0001F1F7 法国节点"
-    !!merge <<: *all
-    filter: "(?i)法国|都柏林|\U0001F1EB\U0001F1F7|FR|France"
-  - name: "\U0001F1E8\U0001F1E6 加拿大节点"
-    !!merge <<: *all
-    filter: "(?i)加拿大|\U0001F1E8\U0001F1E6|CA|Canada"
-  - name: "\U0001F3A5 国际媒体"
-    type: select
-    proxies:
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ♻️ 自动选择
-      - "\U0001F52F 故障转移"
-      - "\U0001F52E 负载均衡"
-      - ⭕️ 直连
-  - name: "\U0001F3B6 国际抖音"
-    type: select
-    proxies:
-      - "\U0001F3A5 国际媒体"
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ⭕️ 直连
-  - name: "\U0001F4E2 谷歌FCM"
-    type: select
-    proxies:
-      - "\U0001F3A5 国际媒体"
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ⭕️ 直连
-  - name: "\U0001F4F9 油管视频"
-    type: select
-    proxies:
-      - "\U0001F3A5 国际媒体"
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ⭕️ 直连
-  - name: "\U0001F4FA 网飞视频"
-    type: select
-    proxies:
-      - "\U0001F3A5 国际媒体"
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ⭕️ 直连
-  - name: "\U0001F3AC 迪士尼+"
-    type: select
-    proxies:
-      - "\U0001F3A5 国际媒体"
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ⭕️ 直连
-  - name: "\U0001F916 OpenAI"
-    type: select
-    proxies:
-      - "\U0001F3A5 国际媒体"
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ⭕️ 直连
-  - name: "\U0001F4E1 电报服务"
-    type: select
-    proxies:
-      - "\U0001F3A5 国际媒体"
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - "\U0001F52F 特殊备用"
-      - ⭕️ 直连
-  - name: "\U0001F34E 苹果服务"
-    type: select
-    proxies:
-      - ⭕️ 直连
-      - ✈️ 国际代理
-      - "\U0001F1ED\U0001F1F0 香港节点"
-      - "\U0001F1F9\U0001F1FC 台湾节点"
-      - "\U0001F1F8\U0001F1EC 新加坡节点"
-      - "\U0001F1EF\U0001F1F5 日本节点"
-      - "\U0001F1F0\U0001F1F7 韩国节点"
-      - "\U0001F1FA\U0001F1F8 美国节点"
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-  - name: Ⓜ️ 微软云盘
-    type: select
-    proxies:
-      - ⭕️ 直连
-      - ✈️ 国际代理
-  - name: "Ⓜ️ 微软服务"
-    type: select
-    proxies:
-      - ⭕️ 直连
-      - ✈️ 国际代理
-  - name: "\U0001F3AE 游戏平台"
-    type: select
-    proxies:
-      - ✈️ 国际代理
-      - ⭕️ 直连
-  - name: "\U0001F3A7 声田音乐"
-    type: select
-    proxies:
-      - "\U0001F3A5 国际媒体"
-      - ⭕️ 直连
-  - name: "\U0001F4B3 贝宝服务"
-    type: select
-    proxies:
-      - ✈️ 国际代理
-      - ⭕️ 直连
-  - name: "\U0001F3B5 网易云音乐"
-    type: select
-    proxies:
-      - "\U0001F4FD 国内媒体"
-      - ⭕️ 直连
-  - name: "\U0001F30F 大陆网络"
-    type: select
-    proxies:
-      - ⭕️ 直连
-      - ✈️ 国际代理
-  - name: "\U0001F4FD 国内媒体"
-    type: select
-    proxies:
-      - "\U0001F30F 大陆网络"
-      - "\U0001F30D️亚洲地区"
-  - name: "\U0001F18E 广告拦截"
-    type: select
-    proxies:
-      - ❌ 拦截
-      - ⭕️ 直连
-  - name: "⭕️ 直连"
-    type: select
-    proxies:
-      - DIRECT
-  - name: "❌ 拦截"
-    type: select
-    proxies:
-      - REJECT
-      - ⭕️ 直连
-  - name: "⏳ 网速测试"
-    type: select
-    url: http://www.google.com/generate_204
-    interval: 300
-    proxies:
-    !!merge <<: *all
-  - name: "\U0001F4CC 精选节点"
-    type: select
-    !!merge <<: *best
-  - name: "\U0001F680 备用应急"
-    type: select
-    !!merge <<: *backup
-  - name: ♻️ 自动选择
-    !!merge <<: *fly
-  - name: "\U0001F52F 故障转移"
-    type: fallback
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-    !!merge <<: *all
-  - name: "\U0001F52F 特殊备用"
-    type: select
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-    !!merge <<: *all
-    filter: "(?i)美|纽约|\U0001F1FA\U0001F1F2|UM|U.S. Outlying Islands|\U0001F1FA\U0001F1F3|UN|United Nations|洛杉矶|芝加哥|达拉斯|\U0001F1FA\U0001F1F8|US|United States"
-    exclude-filter: "(?i)0.1"
-  - name: "\U0001F52E 负载均衡"
-    type: load-balance
-    strategy: consistent-hashing
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    tolerance: 50
-    !!merge <<: *all
-    filter: "(?i)港|hk|hongkong|hong kong|台|tw|taiwan|日本|jp|japan|新|sg|singapore|美|us|unitedstates|united states|韩国|\U0001F1F0\U0001F1F7|KR|South Korea"
-  - name: "\U0001F41F 漏网之鱼"
-    type: select
-    proxies:
-      - ✈️ 国际代理
-      - "\U0001F30D️亚洲地区"
-      - "\U0001F30D欧洲地区"
-      - "\U0001F30D非洲地区"
-      - "\U0001F30D️南美洲地区"
-      - "\U0001F30D️北美洲地区"
-      - "\U0001F4CC 精选节点"
-      - "\U0001F680 备用应急"
-      - ⭕️ 直连
-rule-providers:
-  # 自定义规则
-  direct1:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/pt.rules
-    path: ./rule_provider/direct1.yaml
-    interval: 86400
-  proxy1:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/private.rules
-    path: ./rule_provider/proxy1.yaml
-    interval: 86400
-  reject1:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/reject.rules
-    path: ./rule_provider/reject1.yaml
-    interval: 86400
-    # 直连和广告拦截
-  Special:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Special.yaml
-    path: ./rule_provider/Special.yaml
-    interval: 86400
-  Reject:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Reject.yaml
-    path: ./rule_provider/Reject.yaml
-    interval: 86400
-  AD:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/AD.yaml"
-    path: ./rule_provider/AD.yaml
-    interval: 86400
-  EasyList:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/EasyList.yaml"
-    path: ./rule_provider/EasyList.yaml
-    interval: 86400
-  EasyListChina:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/EasyListChina.yaml"
-    path: ./rule_provider/EasyListChina.yaml
-    interval: 86400
-  EasyPrivacy:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/EasyPrivacy.yaml"
-    path: ./rule_provider/EasyPrivacy.yaml
-    interval: 86400
-  ProgramAD:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/ProgramAD.yaml"
-    path: ./rule_provider/ProgramAD.yaml
-    interval: 86400
-    # 国内媒体分组
-  Bilibili:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Bilibili.yaml
-    path: ./rule_provider/Bilibili.yaml
-    interval: 86400
-  IQ:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/IQ.yaml
-    path: ./rule_provider/IQI.yaml
-    interval: 86400
-  IQIYI:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/IQIYI.yaml
-    path: ./rule_provider/IQYI.yaml
-    interval: 86400
-  Letv:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Letv.yaml
-    path: ./rule_provider/Letv.yaml
-    interval: 86400
-  Netease Music:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Netease%20Music.yaml
-    path: ./rule_provider/Netease_Music.yaml
-    interval: 86400
-  Tencent Video:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Tencent%20Video.yaml
-    path: ./rule_provider/Tencent_Video.yaml
-    interval: 86400
-  Youku:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Youku.yaml
-    path: ./rule_provider/Youku.yaml
-    interval: 86400
-  WeTV:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/WeTV.yaml
-    path: ./rule_provider/WeTV.yaml
-    interval: 86400
-    # 国际媒体分组
-  ABC:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/ABC.yaml
-    path: ./rule_provider/ABC.yaml
-    interval: 86400
-  Abema TV:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Abema%20TV.yaml
-    path: ./rule_provider/Abema_TV.yaml
-    interval: 86400
-  Amazon:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Amazon.yaml
-    path: ./rule_provider/Amazon.yaml
-    interval: 86400
-  Apple Music:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Apple%20Music.yaml
-    path: ./rule_provider/Apple_Music.yaml
-    interval: 86400
-  Apple News:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Apple%20News.yaml
-    path: ./rule_provider/Apple_News.yaml
-    interval: 86400
-  Apple TV:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Apple%20TV.yaml
-    path: ./rule_provider/Apple_TV.yaml
-    interval: 86400
-  Bahamut:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Bahamut.yaml
-    path: ./rule_provider/Bahamut.yaml
-    interval: 86400
-  BBC iPlayer:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/BBC%20iPlayer.yaml
-    path: ./rule_provider/BBC_iPlayer.yaml
-    interval: 86400
-  DAZN:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/DAZN.yaml
-    path: ./rule_provider/DAZN.yaml
-    interval: 86400
-  Discovery Plus:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Discovery%20Plus.yaml
-    path: ./rule_provider/Discovery_Plus.yaml
-    interval: 86400
-  Disney Plus:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Disney%20Plus.yaml
-    path: ./rule_provider/Disney_Plus.yaml
-    interval: 86400
-  encoreTVB:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/encoreTVB.yaml
-    path: ./rule_provider/encoreTVB.yaml
-    interval: 86400
-  F1 TV:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/F1%20TV.yaml
-    path: ./rule_provider/F1_TV.yaml
-    interval: 86400
-  Fox Now:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Fox%20Now.yaml
-    path: ./rule_provider/Fox_Now.yaml
-    interval: 86400
-  Fox+:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Fox%2B.yaml
-    path: ./rule_provider/Fox+.yaml
-    interval: 86400
-  HBO Go:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/HBO%20Go.yaml
-    path: ./rule_provider/HBO_Go.yaml
-    interval: 86400
-  HBO Max:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/HBO%20Max.yaml
-    path: ./rule_provider/HBO_Max.yaml
-    interval: 86400
-  Hulu Japan:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Hulu%20Japan.yaml
-    path: ./rule_provider/Hulu_Japan.yaml
-    interval: 86400
-  Hulu:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Hulu.yaml
-    path: ./rule_provider/Hulu.yaml
-    interval: 86400
-  Japonx:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Japonx.yaml
-    path: ./rule_provider/Japonx.yaml
-    interval: 86400
-  JOOX:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/JOOX.yaml
-    path: ./rule_provider/JOOX.yaml
-    interval: 86400
-  KKBOX:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/KKBOX.yaml
-    path: ./rule_provider/KKBOX.yaml
-    interval: 86400
-  KKTV:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/KKTV.yaml
-    path: ./rule_provider/KKTV.yaml
-    interval: 86400
-  Line TV:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Line%20TV.yaml
-    path: ./rule_provider/Line_TV.yaml
-    interval: 86400
-  myTV SUPER:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/myTV%20SUPER.yaml
-    path: ./rule_provider/myTV_SUPER.yaml
-    interval: 86400
-  Netflix:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Netflix.yaml
-    path: ./rule_provider/Netflix.yaml
-    interval: 86400
-  Pandora:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Pandora.yaml
-    path: ./rule_provider/Pandora.yaml
-    interval: 86400
-  PBS:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/PBS.yaml
-    path: ./rule_provider/PBS.yaml
-    interval: 86400
-  Pornhub:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Pornhub.yaml
-    path: ./rule_provider/Pornhub.yaml
-    interval: 86400
-  Soundcloud:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Soundcloud.yaml
-    path: ./rule_provider/Soundcloud.yaml
-    interval: 86400
-  Spotify:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/Spotify.yaml
-    path: ./rule_provider/Spotify.yaml
-    interval: 86400
-  ViuTV:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/ViuTV.yaml
-    path: ./rule_provider/ViuTV.yaml
-    interval: 86400
-  YouTube:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/YouTube.yaml
-    path: ./rule_provider/YouTube.yaml
-    interval: 86400
-  YouTube Music:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Media/YouTube%20Music.yaml
-    path: ./rule_provider/YouTube_Music.yaml
-    interval: 86400
-    # 苹果服务规则列表
-  Apple:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Apple.yaml
-    path: ./rule_provider/Apple.yaml
-    interval: 86400
-    # 电报、微软、OpenAI、Steam、PayPal 及 TikTok 可选规则列表
-  Telegram:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Telegram.yaml
-    path: ./rule_provider/Telegram.yaml
-    interval: 86400
-  Microsoft:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Microsoft.yaml
-    path: ./rule_provider/Microsoft.yaml
-    interval: 86400
-  OpenAI:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/OpenAI.yaml
-    path: ./rule_provider/OpenAI.yaml
-    interval: 86400
-  Steam:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Steam.yaml
-    path: ./rule_provider/Steam.yaml
-    interval: 86400
-  PayPal:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/PayPal.yaml
-    path: ./rule_provider/PayPal.yaml
-    interval: 86400
-  TikTok:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml
-    path: ./rule_provider/TikTok.yaml
-    interval: 86400
-    # 必须规则列表
-  Speedtest:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Speedtest.yaml
-    path: ./rule_provider/Speedtest.yaml
-    interval: 86400
-  Proxy:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Proxy.yaml
-    path: ./rule_provider/Proxy.yaml
-    interval: 86400
-  Domestic:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/Domestic.yaml
-    path: ./rule_provider/Domestic.yaml
-    interval: 86400
-  LAN:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/Thaolga/Rules/main/Clash/Provider/LAN.yaml
-    path: ./rule_provider/LAN.yaml
-    interval: 86400
-  UnBan_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/UnBan.yaml
-    path: ./providers/rule-provider_UnBan_domain.yaml
-    interval: 86400
-  GoogleFCM_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/Ruleset/GoogleFCM.yaml
-    path: ./providers/rule-provider_GoogleFCM_domain.yaml
-    interval: 86400
-  GoogleCN_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/Ruleset/GoogleCN.yaml
-    path: ./providers/rule-provider_GoogleCN_domain.yaml
-    interval: 86400
-  SteamCN_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/Ruleset/SteamCN.yaml
-    path: ./providers/rule-provider_SteamCN_domain.yaml
-    interval: 86400
-  Bing_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/Ruleset/Bing.yaml
-    path: ./providers/rule-provider_Bing_domain.yaml
-    interval: 86400
-  OneDrive_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/Ruleset/OneDrive.yaml
-    path: ./providers/rule-provider_OneDrive_domain.yaml
-    interval: 86400
-  Microsoft_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/Ruleset/Microsoft.yaml
-    path: ./providers/rule-provider_Microsoft_domain.yaml
-    interval: 86400
-  ProxyGFWlist_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/ProxyGFWlist.yaml
-    path: ./providers/rule-provider_ProxyGFWlist_domain.yaml
-    interval: 86400
-  ChinaDomain_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/ChinaDomain.yaml
-    path: ./providers/rule-provider_ChinaDomain_domain.yaml
-    interval: 86400
-  Download_domain:
-    type: http
-    behavior: classical
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/Providers/Download.yaml
-    path: ./providers/rule-provider_Download_domain.yaml
-    interval: 86400
+  - {name: 🚀 节点选择, type: select, proxies: [🚀 备用应急, ♻️ 美0.1自动, 🇺🇲 美国节点, 🇯🇵 日本节点, 🇭🇰 香港节点, 🔯 香港故转, 🔯 日本故转, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 自动选择, 🌐 全部节点, 全球直连]}
+  - {name: 🌐 全部节点, type: select, include-all: true}
+  - {name: 🔮 GoogleFCM, type: select, proxies: [全球直连, 🚀 节点选择]}
+  - {name: 📹 YouTube,!!merge <<: *pr}
+  - {name: 🍀 Google,!!merge <<: *pr}
+  - {name: 🤖 ChatGPT,!!merge <<: *pr}
+  - {name: 👨🏿‍💻 GitHub,!!merge <<: *pr}
+  - {name: 🐬 OneDrive,!!merge <<: *pr}
+  - {name: 🪟 Microsoft,!!merge <<: *pr}
+  - {name: 🎵 TikTok,!!merge <<: *pr}
+  - {name: 📲 Telegram,type: select, proxies: [🚀 备用应急, 🌐 全部节点]}
+  - {name: 🎥 NETFLIX,!!merge <<: *pr}
+  - {name: ✈️ Speedtest,!!merge <<: *pr}
+  - {name: 💶 PayPal,!!merge <<: *pr}
+  - {name: 🍎 Apple, type: select, proxies: [全球直连, 🚀 节点选择]}
+  - {name: 🎮 游戏平台, type: select, proxies: [🚀 节点选择, 🌐 全部节点, 全球直连]}
+  - {name: 🎯 全球直连, type: select, proxies: [全球直连, 🚀 节点选择]}
+  - {name: 🆎 广告拦截, type: select, proxies: [REJECT, 全球直连, 🚀 节点选择]}
+  - {name: 🐟 漏网之鱼,!!merge <<: *pr}
+  - {name: 🇺🇲 美国节点, type: select, include-all: true, filter: "(?i)美|us|unitedstates|united states"}
+  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)日|jp|japan"}
+  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
+  - {name: 🔯 美国故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日)).)*$" }
+  - {name: 🚀 备用应急, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日|0.1)).)*$" }
+  - {name: 🔯 日本故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
+  - {name: 🔯 香港故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: ♻️ 美0.1自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(0.1))(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日)).)*$" }
+  - {name: ♻️ 美国自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
+  - {name: ♻️ 日本自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
+  - {name: ♻️ 香港自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
+
 rules:
-  - IP-CIDR,10.0.0.0/8,DIRECT
-  - IP-CIDR,100.64.0.0/10,DIRECT
-  - IP-CIDR,127.0.0.0/8,DIRECT
-  - IP-CIDR,169.254.0.0/8,DIRECT
-  - IP-CIDR,172.16.0.0/12,DIRECT
-  - IP-CIDR,192.168.0.0/16,DIRECT
-  - IP-CIDR,224.0.0.0/3,DIRECT
-  - IP-CIDR6,::1/128,DIRECT
-  - IP-CIDR6,fc00::/7,DIRECT
-  - IP-CIDR6,fe80::/10,DIRECT
-  - IP-CIDR6,fd00::/8,DIRECT
-  # 直连和广告拦截
-  - RULE-SET,AD,REJECT
-  - RULE-SET,EasyList,REJECT
-  - RULE-SET,EasyListChina,REJECT
-  - RULE-SET,EasyPrivacy,REJECT
-  - RULE-SET,ProgramAD,REJECT
-  - RULE-SET,Special,DIRECT
-  - "RULE-SET,Reject,\U0001F18E 广告拦截"
-  #自定义内容
-  - "RULE-SET,reject1,\U0001F18E 广告拦截"
-  - "RULE-SET,direct1,\U0001F30F 大陆网络"
-  - "RULE-SET,proxy1,\U0001F3AE 游戏平台"
-  - "RULE-SET,UnBan_domain,\U0001F30F 大陆网络"
-  - "RULE-SET,GoogleFCM_domain,\U0001F4E2 谷歌FCM"
-  - "RULE-SET,Bing_domain,\U0001F916 OpenAI"
-  - DOMAIN-KEYWORD,1drv,Ⓜ️ 微软云盘
-  - DOMAIN-KEYWORD,onedrive,Ⓜ️ 微软云盘
-  - DOMAIN-KEYWORD,skydrive,Ⓜ️ 微软云盘
-  - RULE-SET,OneDrive_domain,Ⓜ️ 微软云盘
-  - DOMAIN-KEYWORD,1e100,✈️ 国际代理
-  - DOMAIN-KEYWORD,abema,✈️ 国际代理
-  - DOMAIN-KEYWORD,appledaily,✈️ 国际代理
-  - DOMAIN-KEYWORD,avtb,✈️ 国际代理
-  - DOMAIN-KEYWORD,beetalk,✈️ 国际代理
-  - DOMAIN-KEYWORD,blogspot,✈️ 国际代理
-  - DOMAIN-KEYWORD,dropbox,✈️ 国际代理
-  - DOMAIN-KEYWORD,facebook,✈️ 国际代理
-  - DOMAIN-KEYWORD,fbcdn,✈️ 国际代理
-  - DOMAIN-KEYWORD,github,✈️ 国际代理
-  - DOMAIN-KEYWORD,gmail,✈️ 国际代理
-  - DOMAIN-KEYWORD,google,✈️ 国际代理
-  - DOMAIN-KEYWORD,instagram,✈️ 国际代理
-  - DOMAIN-KEYWORD,porn,✈️ 国际代理
-  - DOMAIN-KEYWORD,sci-hub,✈️ 国际代理
-  - DOMAIN-KEYWORD,spotify,✈️ 国际代理
-  - DOMAIN-KEYWORD,telegram,✈️ 国际代理
-  - DOMAIN-KEYWORD,twitter,✈️ 国际代理
-  - DOMAIN-KEYWORD,whatsapp,✈️ 国际代理
-  - DOMAIN-KEYWORD,youtube,✈️ 国际代理
-  - DOMAIN-KEYWORD,uk-live,✈️ 国际代理
-  - DOMAIN-KEYWORD,1drv,✈️ 国际代理
-  - DOMAIN-KEYWORD,onedrive,✈️ 国际代理
-  - DOMAIN-KEYWORD,skydrive,✈️ 国际代理
-  - DOMAIN-KEYWORD,porn,✈️ 国际代理
-  - DOMAIN-KEYWORD,ttvnw,✈️ 国际代理
-  - "DOMAIN-KEYWORD,360buy,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,alicdn,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,alimama,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,alipay,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,appzapp,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,baidupcs,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,bilibili,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,ccgslb,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,chinacache,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,duobao,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,jdpay,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,moke,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,qhimg,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,vpimg,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,xiami,\U0001F30F 大陆网络"
-  - "DOMAIN-KEYWORD,xiaomi,\U0001F30F 大陆网络"
-  - "RULE-SET,GoogleCN_domain,\U0001F30F 大陆网络"
-  - "RULE-SET,SteamCN_domain,\U0001F30F 大陆网络"
-  # 国内媒体分组
-  - "RULE-SET,Bilibili,\U0001F4FD 国内媒体"
-  - "RULE-SET,IQ,\U0001F4FD 国内媒体"
-  - "RULE-SET,IQIYI,\U0001F4FD 国内媒体"
-  - "RULE-SET,Letv,\U0001F4FD 国内媒体"
-  - "RULE-SET,Netease Music,\U0001F4FD 国内媒体" #🎵 网易云音乐
-  - "RULE-SET,Tencent Video,\U0001F4FD 国内媒体"
-  - "RULE-SET,Youku,\U0001F4FD 国内媒体"
-  - "RULE-SET,WeTV,\U0001F4FD 国内媒体"
-  # 国际媒体分组
-  - "RULE-SET,Netflix,\U0001F3A5 国际媒体" #📺 网飞视频
-  - "RULE-SET,Disney Plus,\U0001F3A5 国际媒体" #🎬 迪士尼+
-  - "RULE-SET,Spotify,\U0001F3A5 国际媒体" #🎧 声田音乐
-  - "RULE-SET,YouTube Music,\U0001F3A5 国际媒体"
-  - "RULE-SET,ABC,\U0001F3A5 国际媒体"
-  - "RULE-SET,Abema TV,\U0001F3A5 国际媒体"
-  - "RULE-SET,Amazon,\U0001F3A5 国际媒体"
-  - "RULE-SET,Apple News,\U0001F3A5 国际媒体"
-  - "RULE-SET,Apple TV,\U0001F3A5 国际媒体"
-  - "RULE-SET,Bahamut,\U0001F3A5 国际媒体"
-  - "RULE-SET,BBC iPlayer,\U0001F3A5 国际媒体"
-  - "RULE-SET,DAZN,\U0001F3A5 国际媒体"
-  - "RULE-SET,Discovery Plus,\U0001F3A5 国际媒体"
-  - "RULE-SET,encoreTVB,\U0001F3A5 国际媒体"
-  - "RULE-SET,F1 TV,\U0001F3A5 国际媒体"
-  - "RULE-SET,Fox Now,\U0001F3A5 国际媒体"
-  - "RULE-SET,Fox+,\U0001F3A5 国际媒体"
-  - "RULE-SET,HBO Go,\U0001F3A5 国际媒体"
-  - "RULE-SET,HBO Max,\U0001F3A5 国际媒体"
-  - "RULE-SET,Hulu Japan,\U0001F3A5 国际媒体"
-  - "RULE-SET,Hulu,\U0001F3A5 国际媒体"
-  - "RULE-SET,Japonx,\U0001F3A5 国际媒体"
-  - "RULE-SET,JOOX,\U0001F3A5 国际媒体"
-  - "RULE-SET,KKBOX,\U0001F3A5 国际媒体"
-  - "RULE-SET,KKTV,\U0001F3A5 国际媒体"
-  - "RULE-SET,Line TV,\U0001F3A5 国际媒体"
-  - "RULE-SET,myTV SUPER,\U0001F3A5 国际媒体"
-  - "RULE-SET,Pandora,\U0001F3A5 国际媒体"
-  - "RULE-SET,PBS,\U0001F3A5 国际媒体"
-  - "RULE-SET,Pornhub,\U0001F3A5 国际媒体"
-  - "RULE-SET,Soundcloud,\U0001F3A5 国际媒体"
-  - "RULE-SET,ViuTV,\U0001F3A5 国际媒体"
-  # 苹果服务
-  - "RULE-SET,Apple,\U0001F34E 苹果服务"
-  # 电报、微软、贝宝及 Steam 可选规则，如需为某个规则列表单独设置策略，请直接修改策略名称与上方策略组名称保持一致
-  - RULE-SET,Microsoft,Ⓜ️ 微软服务
-  - "RULE-SET,OpenAI,\U0001F916 OpenAI"
-  - "RULE-SET,YouTube,\U0001F4F9 油管视频"
-  - "RULE-SET,Telegram,\U0001F4E1 电报服务"
-  - "RULE-SET,PayPal,\U0001F4B3 贝宝服务"
-  - "RULE-SET,Steam,\U0001F3AE 游戏平台"
-  - "RULE-SET,TikTok,\U0001F3B6 国际抖音"
-  # 必须规则
-  - RULE-SET,Speedtest,⏳ 网速测试
-  - RULE-SET,Proxy,✈️ 国际代理
-  - "RULE-SET,Domestic,\U0001F30F 大陆网络"
-  - RULE-SET,LAN,DIRECT
-  - RULE-SET,ProxyGFWlist_domain,✈️ 国际代理
-  # 最终规则
-  - "GEOSITE,CN,\U0001F30F 大陆网络"
-  - "GEOIP,CN,\U0001F30F 大陆网络"
-  - "MATCH,\U0001F41F 漏网之鱼"
-find-process-mode: off
-authentication:
-  - mihomo:884893
+  - RULE-SET,private_domain,全球直连
+  - RULE-SET,bt,🎯 全球直连
+  - RULE-SET,pt,🎯 全球直连
+  - RULE-SET,apple_domain,🍎 Apple
+  - RULE-SET,proxylite,🚀 节点选择
+  - RULE-SET,ai,🤖 ChatGPT
+  - RULE-SET,GoogleFCM,🔮 GoogleFCM
+  - RULE-SET,1pt,🎯 全球直连
+  - RULE-SET,1rj,🆎 广告拦截
+  - RULE-SET,1pr,🎮 游戏平台
+  - RULE-SET,github_domain,👨🏿‍💻 GitHub
+  - RULE-SET,youtube_domain,📹 YouTube
+  - RULE-SET,google_domain,🍀 Google
+  - RULE-SET,onedrive_domain,🐬 OneDrive
+  - RULE-SET,microsoft_domain,🪟 Microsoft
+  - RULE-SET,tiktok_domain,🎵 TikTok
+  - RULE-SET,speedtest_domain,✈️ Speedtest
+  - RULE-SET,telegram_domain,📲 Telegram
+  - RULE-SET,netflix_domain,🎥 NETFLIX
+  - RULE-SET,paypal_domain,💶 PayPal
+  - RULE-SET,gfw_domain,🚀 节点选择
+  - RULE-SET,geolocation-!cn,🚀 节点选择
+  - RULE-SET,cn_domain,🎯 全球直连
+  - RULE-SET,google_ip,🍀 Google,no-resolve
+  - RULE-SET,netflix_ip,🎥 NETFLIX,no-resolve
+  - RULE-SET,telegram_ip,📲 Telegram,no-resolve
+  - RULE-SET,cn_ip,🎯 全球直连
+  - MATCH,🐟 漏网之鱼
+rule-anchor:
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+  class: &class {type: http, interval: 86400, behavior: classical, format: text}
+rule-providers: 
+  1pt: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/pt.list"}
+  GoogleFCM: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GoogleFCM/GoogleFCM.list"}
+  1pr: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/pr.list"}
+  1rj: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/rj.list"}
+
+  bt: {!!merge <<: *ip, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/bt.mrs"}
+  pt: {!!merge <<: *ip, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/pt.list"}
+
+  private_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
+  proxylite: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/master/ProxyLite.list"}
+  ai: { <<: *domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-ai-chat-!cn.mrs" }
+  youtube_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
+  google_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"}
+  github_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"}
+  telegram_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
+  netflix_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
+  paypal_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
+  onedrive_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.mrs"}
+  microsoft_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"}
+  apple_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.mrs"}
+  speedtest_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ookla-speedtest.mrs"}
+  tiktok_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"}
+  gfw_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs"}
+  geolocation-!cn: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
+  cn_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"}
+  
+  cn_ip: {!!merge <<: *ip, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs"}
+  google_ip: {!!merge <<: *ip, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs"}
+  telegram_ip: {!!merge <<: *ip, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs"}
+  netflix_ip: {!!merge <<: *ip, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"}
+
