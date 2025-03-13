@@ -154,7 +154,7 @@ dns:
   fallback:
     - https://dns.cloudflare.com/dns-query
   nameserver-policy:
-    'rule-set:GoogleFCM': 
+    'rule-set:Google@CN_domain,GoogleFCM': 
       - 223.5.5.5
       - 119.29.29.29
     geosite:cn,private:
@@ -184,7 +184,7 @@ exclude-filter-list: &exclude-filter "剩余流量|距离下次重置剩余|套�
 proxy-groups:
   - {name: 🚀 节点选择, type: select, proxies: [🚀 备用应急, ♻️ 美0.1自动, 🇺🇲 美国节点, 🇯🇵 日本节点, 🇭🇰 香港节点, 🔯 香港故转, 🔯 日本故转, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 自动选择, 🌐 全部节点, 全球直连]}
   - {name: 🌐 全部节点, type: select, include-all: true}
-  - {name: 🔮 GoogleFCM, type: select, proxies: [全球直连, 🚀 节点选择]}
+  - {name: 🔮 Google@CN, type: select, proxies: [全球直连, 🚀 节点选择]}
   - {name: 📹 YouTube,!!merge <<: *pr}
   - {name: 🍀 Google,!!merge <<: *pr}
   - {name: 🤖 ChatGPT,!!merge <<: *pr}
@@ -192,7 +192,10 @@ proxy-groups:
   - {name: 🐬 OneDrive,!!merge <<: *pr}
   - {name: 🪟 Microsoft,!!merge <<: *pr}
   - {name: 🎵 TikTok,!!merge <<: *pr}
-  - {name: 📲 Telegram,type: select, proxies: [🚀 备用应急, 🌐 全部节点]}
+  
+#tg节点敏感，避免风控，最好手动配置
+  - {name: 📲 Telegram,type: select, proxies: [🚀 备用应急, 🚀 节点选择, 🌐 全部节点]}
+  
   - {name: 🎥 NETFLIX,!!merge <<: *pr}
   - {name: ✈️ Speedtest,!!merge <<: *pr}
   - {name: 💶 PayPal,!!merge <<: *pr}
@@ -208,7 +211,10 @@ proxy-groups:
   - {name: 🚀 备用应急, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日|0.1)).)*$" }
   - {name: 🔯 日本故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
   - {name: 🔯 香港故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  
+#低倍率节点配置，自行替换关键词的正则
   - {name: ♻️ 美0.1自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(0.1))(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日)).)*$" }
+
   - {name: ♻️ 美国自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
   - {name: ♻️ 日本自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
   - {name: ♻️ 香港自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
@@ -216,12 +222,11 @@ proxy-groups:
 
 rules:
   - RULE-SET,private_domain,全球直连
-  - RULE-SET,bt,🎯 全球直连
-  - RULE-SET,pt,🎯 全球直连
   - RULE-SET,apple_domain,🍎 Apple
   - RULE-SET,proxylite,🚀 节点选择
   - RULE-SET,ai,🤖 ChatGPT
-  - RULE-SET,GoogleFCM,🔮 GoogleFCM
+  - RULE-SET,GoogleFCM,🔮 Google@CN
+  - RULE-SET,Google@CN_domain,🔮 Google@CN
   - RULE-SET,1pt,🎯 全球直连
   - RULE-SET,1rj,🆎 广告拦截
   - RULE-SET,1pr,🎮 游戏平台
@@ -238,6 +243,8 @@ rules:
   - RULE-SET,gfw_domain,🚀 节点选择
   - RULE-SET,geolocation-!cn,🚀 节点选择
   - RULE-SET,cn_domain,🎯 全球直连
+  - RULE-SET,bt,🎯 全球直连
+  - RULE-SET,pt,🎯 全球直连
   - RULE-SET,google_ip,🍀 Google,no-resolve
   - RULE-SET,netflix_ip,🎥 NETFLIX,no-resolve
   - RULE-SET,telegram_ip,📲 Telegram,no-resolve
@@ -249,12 +256,14 @@ rule-anchor:
   class: &class {type: http, interval: 86400, behavior: classical, format: text}
 rule-providers: 
   1pt: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/pt.list"}
-  GoogleFCM: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GoogleFCM/GoogleFCM.list"}
   1pr: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/pr.list"}
   1rj: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/Viel0320/game-cl-provider-private/refs/heads/main/rj.list"}
 
   bt: {!!merge <<: *ip, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/bt.mrs"}
-  pt: {!!merge <<: *ip, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/pt.list"}
+  pt: {!!merge <<: *ip, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/pt.mrs"}
+  Google@CN_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/google@cn.mrs"}
+  GoogleFCM: {!!merge <<: *domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/googlefcm.mrs"}
+
 
   private_domain: {!!merge <<: *domain, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
   proxylite: {!!merge <<: *class, url: "https://ghfast.top/https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/master/ProxyLite.list"}
@@ -278,4 +287,3 @@ rule-providers:
   google_ip: {!!merge <<: *ip, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs"}
   telegram_ip: {!!merge <<: *ip, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs"}
   netflix_ip: {!!merge <<: *ip, url: "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"}
-
