@@ -182,12 +182,12 @@ pr: &pr {type: select, proxies: [🚀 节点选择, 🔯 香港故转, 🔯 日�
 exclude-filter-list: &exclude-filter "剩余流量|距离下次重置剩余|套餐到期|跳转域名{请勿连接}|邀请好友|关注频道|收费就说明被骗了"
 # 策略组
 proxy-groups:
-  - {name: 🚀 节点选择, type: select, proxies: [🚀 备用应急, ♻️ 美0.1自动, 🇺🇲 美国节点, 🇯🇵 日本节点, 🇭🇰 香港节点, 🔯 香港故转, 🔯 日本故转, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 自动选择, 🌐 全部节点, 全球直连]}
+  - {name: 🚀 节点选择, type: select, proxies: [🇺🇲 美国节点, 🇯🇵 日本节点, 🇭🇰 香港节点, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 自动选择, 🌐 全部节点, 全球直连]}
   - {name: 🌐 全部节点, type: select, include-all: true}
   - {name: 🔮 Google@CN, type: select, proxies: [全球直连, 🚀 节点选择]}
   - {name: 📹 YouTube,!!merge <<: *pr}
   - {name: 🍀 Google,!!merge <<: *pr}
-  - {name: 🤖 ChatGPT,!!merge <<: *pr}
+  - {name: 🤖 ChatGPT, type: select, proxies: [🤖 GPT, 🇸🇬 新加坡, 🇺🇲 美国,  🇯🇵 日本]}
   - {name: 👨🏿‍💻 GitHub,!!merge <<: *pr}
   - {name: 🐬 OneDrive,!!merge <<: *pr}
   - {name: 🪟 Microsoft,!!merge <<: *pr}
@@ -195,29 +195,25 @@ proxy-groups:
   
 #tg节点敏感，避免风控，最好手动配置
   - {name: 📲 Telegram,type: select, proxies: [🚀 备用应急, 🚀 节点选择, 🌐 全部节点]}
-  
   - {name: 🎥 NETFLIX,!!merge <<: *pr}
   - {name: ✈️ Speedtest,!!merge <<: *pr}
   - {name: 💶 PayPal,!!merge <<: *pr}
   - {name: 🍎 Apple, type: select, proxies: [全球直连, 🚀 节点选择]}
   - {name: 🎮 游戏平台, type: select, proxies: [🚀 节点选择, 🌐 全部节点, 全球直连]}
+  - {name: 🤖 GPT, type: select, include-all: true, filter: "(?i)gpt"}
   - {name: 🎯 全球直连, type: select, proxies: [全球直连, 🚀 节点选择]}
   - {name: 🆎 广告拦截, type: select, proxies: [REJECT, 全球直连, 🚀 节点选择]}
   - {name: 🐟 漏网之鱼,!!merge <<: *pr}
-  - {name: 🇺🇲 美国节点, type: select, include-all: true, filter: "(?i)美|us|unitedstates|united states"}
-  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)日|jp|japan"}
-  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
-  - {name: 🔯 美国故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日)).)*$" }
-  - {name: 🚀 备用应急, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日|0.1)).)*$" }
-  - {name: 🔯 日本故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
-  - {name: 🔯 香港故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: 🇺🇲 美国, type: select, include-all: true, filter: "(?i)美|us|unitedstates|united states"}
+  - {name: 🇯🇵 日本, type: select, include-all: true, filter: "(?i)日|jp|japan"}
+  - {name: 🇭🇰 香港, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
+  - {name: 🇸🇬 新加坡, type: select, include-all: true, filter: "(?i)新加坡|sg"}
   
 #低倍率节点配置，自行替换关键词的正则
-  - {name: ♻️ 美0.1自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(0.1))(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日)).)*$" }
-
   - {name: ♻️ 美国自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
   - {name: ♻️ 日本自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
   - {name: ♻️ 香港自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: ♻️ 新加坡自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(新加坡)^((?!(台|日|韩|新|深|美)).)*$"}
   - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
 
 rules:
